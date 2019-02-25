@@ -133,3 +133,54 @@ IDX,Variable,Label,Type,Length,Categories,Theme
 -2:No answer
 -1:Don´t know
 ",Work
+001_132,A165,Most people can be trusted,NA,2,"1:Most people can be trusted
+2:Can´t be too careful
+-5:Missing; Unknown
+-4:Not asked in survey
+-3:Not applicable
+-2:No answer
+-1:Don´t know
+",Perceptions of life
+003_001,C001,Jobs scarce: Men should have more right to a job than women,NA,2,"1:Agree
+2:Disagree
+3:Neither
+-5:Missing; Unknown
+-4:Not asked in survey
+-3:Not applicable
+-2:No answer
+-1:Don´t know
+",Work
+003_006,C006,Satisfaction with financial situation of household,NA,2,"1:Dissatisfied
+2:2
+3:3
+4:4
+5:5
+6:6
+7:7
+8:8
+9:9
+10:Satisfied
+-5:Missing; Unknown
+-4:Not asked in survey
+-3:Not applicable
+-2:No answer
+-1:Don´t know
+",Work
+004_020,D019,A woman has to have children to be fulfilled,NA,2,"0:Not necessary
+1:Needs children
+-5:Missing; Unknown
+-4:Not asked in survey
+-3:Not applicable
+-2:No answer
+-1:Don´t know
+",Family
+004_061,D059,Men make better political leaders than women do,NA,2,"1:Agree strongly
+2:Agree
+3:Disagree
+4:Strongly disagree
+-5:Missing; Unknown
+-4:Not asked in survey
+-3:Not applicable
+-2:No answer
+-1:Don´t know
+",Family
