@@ -10,14 +10,32 @@
 	</style>
 
 	<body>
-
-		<select id = "opts">
-			<option value="ds1">data1</option>
-			<option value="ds2">data2</option>
-			<option value="ds3">data3</option>
-  	</select>
-
 		<script src="https://d3js.org/d3.v5.min.js"></script>
 		<script src="values.js"></script>
+		<div id="selectors">
+			<select id = "xOpts">
+				<option value='"A170"'>Happy</option>
+				<option value='"A173"'>Choice</option>
+				<option value='"C037"'>Shame</option>
+			</select>
+			X Axis Value
+			<br/>
+			<select id = "yOpts">
+				<option value='"A173"'>Choice</option>
+				<option value='"A170"'>Happy</option>
+				<option value='"C037"'>Shame</option>
+			</select>
+			Y Axis Value
+			<br/>
+			<select id = "waveOpts">
+				<option value="6">2014</option>
+				<option value="5">2010</option>
+				<option value="4">2006</option>
+				<option value="3">2000</option>
+				<option value="2">1990</option>
+				<option value="1">1980</option>
+			</select>
+			Year
+		</div>
 	</body>
 </html>
