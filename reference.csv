@@ -1,0 +1,135 @@
+IDX,Variable,Label,Type,Length,Categories,Theme
+001_138,A170,Satisfaction with your life,NA,2,"1:Dissatisfied
+2:2
+3:3
+4:4
+5:5
+6:6
+7:7
+8:8
+9:9
+10:Satisfied
+-5:Missing; Unknown
+-4:Not asked in survey
+-3:Not applicable
+-2:No answer
+-1:Don´t know
+",Perceptions of life
+001_141,A173,How much freedom of choice and control,NA,2,"1:None at all
+2:2
+3:3
+4:4
+5:5
+6:6
+7:7
+8:8
+9:9
+10:A great deal
+-5:Missing; Unknown
+-4:Not asked in survey
+-3:Not applicable
+-2:No answer
+-1:Don´t know
+",Perceptions of life
+002_008,B008,Protecting environment vs. Economic growth,NA,2,"1:Protecting environment
+2:Economy growth and creating jobs
+3:Other answer
+-5:Missing; Unknown
+-4:Not asked in survey
+-3:Not applicable
+-2:No answer
+-1:Don´t know
+",Environment
+006_034,F034,Religious person,NA,2,"1:A religious person
+2:Not a religious person
+3:A convinced atheist
+4:Other answer
+-5:Missing; Unknown
+-4:Not asked in survey
+-3:Not applicable
+-2:No answer
+-1:Don´t know
+",Religion and Morale
+006_050,F050,Believe in: God,NA,2,"0:No
+1:Yes
+-5:Missing; Unknown
+-4:Not asked in survey
+-3:Not applicable
+-2:No answer
+-1:Don´t know
+",Religion and Morale
+005_184,E217,"Science and technology are making our lives healthier, easier, and more comfortable",NA,2,"1:Completely disagree
+2:2
+3:3
+4:4
+5:5
+6:6
+7:7
+8:8
+9:9
+10:Completely agree
+-5:Missing; Unknown
+-4:Not asked in survey
+-3:Not applicable
+-2:No answer
+-1:Don´t know
+",Politics and Society
+005_187,E220,We depend too much on science and not enough on faith,NA,2,"1:Completely disagree
+2:2
+3:3
+4:4
+5:5
+6:6
+7:7
+8:8
+9:9
+10:Completely agree
+-5:Missing; Unknown
+-4:Not asked in survey
+-3:Not applicable
+-2:No answer
+-1:Don´t know
+",Politics and Society
+005_049,E046,New and old ideas,NA,2,"1:Ideas that stood test of time are generally best
+2:2
+3:3
+4:4
+5:5
+6:6
+7:7
+8:8
+9:9
+10:New ideas are generally better than old ones
+-5:Missing; Unknown
+-4:Not asked in survey
+-3:Not applicable
+-2:No answer
+-1:Don´t know
+",Politics and Society
+005_038,E035,Income equality,NA,2,"1:Incomes should be made more equal
+2:2
+3:3
+4:4
+5:5
+6:6
+7:7
+8:8
+9:9
+10:We need larger income differences as incentives
+-5:Missing; Unknown
+-4:Not asked in survey
+-3:Not applicable
+-2:No answer
+-1:Don´t know
+",Politics and Society
+003_037,C037,Humiliating to receive money without having to work for it,NA,2,"1:Strongly agree
+2:Agree
+3:Neither agree or disagree
+4:Disagree
+5:Strongly disagree
+-5:Missing; Unknown
+-4:Not asked in survey
+-3:Not applicable
+-2:No answer
+-1:Don´t know
+",Work
