@@ -1,7 +1,9 @@
 var div = document.getElementById('cnv');
 var width = div.clientWidth;
 var height = (width/4)*3;
-var bubbleSize = 10;
+var maxBubbleSize = 25,
+    minBubbleSize = 5;
+var populateDropdowns = true;
 
 var margin = {top: 20, right: 20, bottom: 80, left: 60},
     graphWidth = width - margin.left - margin.right,
@@ -21,6 +23,8 @@ var xScale = d3.scaleLinear()
   .range([0, graphWidth])
 var yScale = d3.scaleLinear()
   .range([graphHeight, 0])
+var zScale = d3.scaleLinear()
+  .range([minBubbleSize, maxBubbleSize])
 
 var yAxisCall = d3.axisLeft(yScale)
 var yAxis = d3.select("#canvas").append("g")
@@ -52,9 +56,9 @@ var tooltip = d3.select("body").append("div")
   .attr("class", "tooltip")
   .style("opacity", 0);
 
-update(xData = "A170", yData = "A173", wave = 6)
+update(xData = "A170", yData = "A173", zData = "E035", wave = 6)
 
-function update(xData, yData, wave) {
+function update(xData, yData, zData, wave) {
   Promise.all([
     d3.csv("stats.csv"),
     d3.csv("reference.csv")
@@ -67,15 +71,41 @@ function update(xData, yData, wave) {
           return xData + d[xData];
         });
 
-    xScale.domain(d3.extent(stats, function (d) {
-      return +d[xData]
-    }))
-    .nice();
+      if (populateDropdowns) {
+        populateDropdowns = false;
+        ref.forEach(function(d){
+          d3.select("#xOpts")
+        	 .append('option')
+            .attr("value", "'" + d.Variable + "'")
+      	    .text(d.Label)
+          d3.select("#yOpts")
+        	 .append('option')
+            .attr("value", "'" + d.Variable + "'")
+      	    .text(d.Label)
+          d3.select("#zOpts")
+        	 .append('option')
+            .attr("value", "'" + d.Variable + "'")
+      	    .text(d.Label)
+          })
+        }
 
-    yScale.domain(d3.extent(stats, function(d, i) {
-      return +d[yData]
+    xScale.domain(d3.extent(stats, function (d) {
+      if (d["Wave"] == wave) {
+        return +d[xData]
+      }
     }))
     .nice();
+    yScale.domain(d3.extent(stats, function(d) {
+      if (d["Wave"] == wave) {
+          return +d[yData]
+      }
+    }))
+    .nice();
+    zScale.domain(d3.extent(stats, function(d){
+      if (d["Wave"] == wave) {
+        return +d[zData]
+      }
+    }))
 
     //update axis labels
     var label
@@ -90,6 +120,14 @@ function update(xData, yData, wave) {
     d3.select("#x-axis-title")
       .text(label)
 
+    //bubble label prep
+    var bubbleLabel
+    ref.forEach(function(d){
+      if (d["Variable"] == zData) {
+        bubbleLabel = d.Label
+      }
+    })
+
     //update values
     bubbles
     .attr("cx", function(d, i){
@@ -102,9 +140,17 @@ function update(xData, yData, wave) {
       if (+d["Wave"] != wave || d[xData] == "NA" || d[yData] == "NA") {
           return 0;
       } else {
-        return bubbleSize;
+        return zScale(+d[zData]);
       }
     })
+    .on("mouseover", function(d) {
+      tooltip.transition()
+          .duration(200)
+          .style("opacity", .9);
+      tooltip.html(d.Country + "<br/>" + bubbleLabel + ":" + d[zData])
+          .style("left", (d3.event.pageX) + "px")
+          .style("top", (d3.event.pageY - 28) + "px");
+      })
 
     bubbles.enter().append("circle")
       .attr("cx", function(d, i){
@@ -117,7 +163,7 @@ function update(xData, yData, wave) {
         if (+d["Wave"] != wave || d[xData] == "NA" || d[yData] == "NA") {
             return 0;
         } else {
-          return bubbleSize;
+          return zScale(+d[zData]);
         }
       })
       .attr("fill", "grey")
@@ -131,7 +177,7 @@ function update(xData, yData, wave) {
             tooltip.transition()
                 .duration(200)
                 .style("opacity", .9);
-            tooltip.html(d.Country + "<br/>")
+            tooltip.html(d.Country + "<br/>" + bubbleLabel + ":" + d[zData])
                 .style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY - 28) + "px");
             })
@@ -141,44 +187,52 @@ function update(xData, yData, wave) {
                 .style("opacity", 0);
         });
 
-    bubbles.exit().remove()
-
     //update and scale axes
     xAxis.call(xAxisCall)
     yAxis.call(yAxisCall)
 
-    var xLabel,
-        yLabel,
-        xInfo,
-        yInfo
+    var xLabel = ref[1].Label,
+        yLabel = ref[2].Label,
+        zLabel = ref[9].Label,
+        xInfo = ref[1].Categories,
+        yInfo = ref[2].Categories,
+        zInfo = ref[9].Categories
     ref.forEach(function(d){
       if (d["Variable"] == xData) {
         xLabel = d.Label
         xInfo = d.Categories
-      } else if (d["Variable"] == yData) {
+      }
+      if (d["Variable"] == yData) {
         yLabel = d.Label
         yInfo = d.Categories
       }
+      if (d["Variable"] == zData) {
+        zLabel = d.Label
+        zInfo = d.Categories
+      }
     })
-    d3.select("#axisInfoX").html("Label " + "\"" + label + "\"" + " is graded as follows:" + "<br/>" + info);
-    d3.select("#axisInfoY").html("Label " + "\"" + label + "\"" + " is graded as follows:" + "<br/>" + info);
-    //d3.select("#axisInfoZText").text("Label " + "\"" + label + "\"" + " is graded as follows:" + info);
+    d3.select("#axisInfoX").html("Label " + "\"" + xLabel + "\"" + " is graded as follows:<br/>" + xInfo.toString() + "<br/>Negative answers are not included in the graph data.");
+    d3.select("#axisInfoY").html("Label " + "\"" + yLabel + "\"" + " is graded as follows:<br/>" + yInfo.toString() + "<br/>Negative answers are not included in the graph data.");
+    d3.select("#axisInfoZ").html("Label " + "\"" + zLabel + "\"" + " is graded as follows:<br/>" + zInfo.toString() + "<br/>Negative answers are not included in the graph data.<br/>Bigger bubbles correspond to higher values.");
 
     d3.select('#xOpts').on('change', function() {
       var input = eval(d3.select(this).property('value'));
-      return update(input, yData, wave)
+      return update(input, yData, zData, wave)
     })
     d3.select('#yOpts').on('change', function() {
       var input = eval(d3.select(this).property('value'));
-      return update(xData, input, wave)
+      return update(xData, input, zData, wave)
     })
-    d3.select('#sizeOpts').on('change', function() {
+    d3.select('#zOpts').on('change', function() {
       var input = eval(d3.select(this).property('value'));
-      return update(xData, yData, wave)
+      if (input == null) {
+        //input = "defaultBubbles";
+      }
+      return update(xData, yData, input, wave)
     })
     d3.select('#waveOpts').on('change', function() {
       var input = eval(d3.select(this).property('value'));
-      return update(xData, yData, input)
+      return update(xData, yData, zData, input)
     })
   })
 }
