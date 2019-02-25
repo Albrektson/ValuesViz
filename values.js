@@ -20,16 +20,47 @@ var xScale = d3.scaleLinear()
 var yScale = d3.scaleLinear()
   .range([graphHeight, 0])
 
-update(xData = "A170");
+var yAxisCall = d3.axisLeft(yScale)
+  .tickSize(5)
+  .tickPadding(2)
+var yAxis = d3.select("#canvas").append("g")
+  .attr("class", "y-axis")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+  .call(yAxisCall)
 
-function update(xData) {
+var xAxisCall = d3.axisBottom(xScale)
+    .tickSize(5)
+    .tickPadding(2)
+var xAxis = d3.select("#canvas").append("g")
+    .attr("class", "x-axis")
+    .attr("transform", "translate(" + margin.left + "," + (height - margin.bottom) + ")")
+    .call(xAxisCall)
+
+update(xData = "A170", wave = 6)
+
+var x = false;
+setInterval(function() {
+  if (x) {
+    update(xData = "A170", wave = 6);
+    x = false;
+  } else {
+    update(xData = "A173", wave = 6);
+    x = true;
+  }
+}, 750);
+
+function update(xData, wave) {
   d3.csv("stats.csv").then(function(stats){
     var bubbles = d3.select("#graph")
-      .selectAll("datapoints")
-        .data(stats);
+      .selectAll("circle")
+        .data(stats, function(d){
+          return xData + d[xData];
+        });
 
     stats.forEach(function(d){
-      //console.log(d);
+      if (+d["Wave"] == wave){
+        //console.log(d);
+      }
     })
 
     xScale.domain(d3.extent(stats, function (d) {
@@ -43,55 +74,38 @@ function update(xData) {
     }))
     .nice();
 
-    bubbles.enter().append("circle")
+    //update values
+    bubbles
       .attr("cx", function(d, i){
         //return xScale(i)
         return xScale(+d[xData]);
       })
+
+    bubbles.enter().append("circle")
+      .attr("cx", function(d, i){
+        return xScale(+d[xData]);
+      })
       .attr("cy", function(d, i) {
-        //return graphHeight/2;
         return yScale(i);
       })
       .attr("r", function(d){
-        /*
-        return yScaleRight(+d["percent position"])
-        */
-        return 2;
+        if (+d["Wave"] == wave) {
+            return 3;
+        } else {
+          return 0;
+        }
       })
       .attr("fill", "grey")
-      .attr("opacity", 1)
+      .attr("stroke", "steelblue")
+      .attr("opacity", 0.75)
+      .attr("id", function(d){
+        return d["Country"]+d["Wave"]
+      });
 
-    var yAxisCall = d3.axisLeft(yScale)
-      .tickSize(5)
-      .tickPadding(2)  //offset away from axis
-    var yAxis = d3.select("#canvas").append("g")
-      .attr("class", "y-axis")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-      .call(yAxisCall)
+      bubbles.exit().remove()
 
-    var xAxisCall = d3.axisBottom(xScale)
-        .tickSize(5)
-        .tickPadding(2)  //offset away from axis
-    var xAxis = d3.select("#canvas").append("g")
-        .attr("class", "x-axis")
-        .attr("transform", "translate(" + margin.left + "," + (height - margin.bottom) + ")")
-        .call(xAxisCall)
-  });
+      //update and scale axes
+      xAxis.call(xAxisCall)
+      yAxis.call(yAxisCall)
+  })
 }
-
-
-/*
-d3.interval(function(){
-  yScale = useLogScale ? yLogScale : yLinearScale;
-  yScale.domain(d3.extent(trades, function(d) {
-    return +d["Volume"]
-  })).nice();
-  yAxis.call(
-    d3.axisLeft(yScale)
-      .tickSize(3)
-      .tickPadding(10)
-  );
-  bars.attr("height", 1);
-  useLogScale = !useLogScale;
-}, 1000)
-*/
