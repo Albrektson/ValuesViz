@@ -187,6 +187,8 @@ function update(xData, yData, zData, wave) {
                 .style("opacity", 0);
         });
 
+    bubbles.exit().remove()
+
     //update and scale axes
     xAxis.call(xAxisCall)
     yAxis.call(yAxisCall)
