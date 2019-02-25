@@ -36,8 +36,8 @@ var xAxis = d3.select("#canvas").append("g")
     .attr("transform", "translate(" + margin.left + "," + (height - margin.bottom) + ")")
     .call(xAxisCall)
 
-update(xData = "A170", wave = 6)
-
+update(xData = "A170", yData = "A173", wave = 6)
+/*
 var x = false;
 setInterval(function() {
   if (x) {
@@ -47,9 +47,9 @@ setInterval(function() {
     update(xData = "A173", wave = 6);
     x = true;
   }
-}, 750);
-
-function update(xData, wave) {
+}, 3000);
+*/
+function update(xData, yData, wave) {
   d3.csv("stats.csv").then(function(stats){
     var bubbles = d3.select("#graph")
       .selectAll("circle")
@@ -57,20 +57,13 @@ function update(xData, wave) {
           return xData + d[xData];
         });
 
-    stats.forEach(function(d){
-      if (+d["Wave"] == wave){
-        //console.log(d);
-      }
-    })
-
     xScale.domain(d3.extent(stats, function (d) {
       return +d[xData]
     }))
     .nice();
 
     yScale.domain(d3.extent(stats, function(d, i) {
-      //return +d[""]
-      return i
+      return +d[yData]
     }))
     .nice();
 
@@ -86,7 +79,7 @@ function update(xData, wave) {
         return xScale(+d[xData]);
       })
       .attr("cy", function(d, i) {
-        return yScale(i);
+        return yScale(+d[yData]);
       })
       .attr("r", function(d){
         if (+d["Wave"] == wave) {
