@@ -6,36 +6,82 @@
 	</head>
 
 	<style>
+	body {
+	  font-family: Arial;
+	  padding: 10px;
+	  background: #f1f1f1;
+	}
 
+	.leftcolumn {
+		float: left;
+		width: 60%;
+	}
+
+	.rightcolumn {
+	  float: left;
+	  width: 30%;
+	  background-color: #f1f1f1;
+		stroke: red;
+	  padding-left: 20px;
+		border: 1px solid #050505;
+	}
+
+	div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 60px;
+    height: 28px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;		
+    border-radius: 8px;
+    pointer-events: none;
+	}
 	</style>
 
 	<body>
+		<div class="row">
+			<div class="leftcolumn" id="cnv"> </div>
+			<div class="rightcolumn" id="info">
+				<div id="axisInfoX"></div>
+				<br>
+				<div id="axisInfoY"></div>
+				<br>
+				<div id="axisInfoZ"></div>
+				<br>
+				<div id="selectors">
+					X Axis:
+					<select id = "xOpts">
+						<option value='"A170"'>Happy</option>
+						<option value='"A173"'>Choice</option>
+						<option value='"C037"'>Shame</option>
+					</select>
+					<br>
+
+					Y Axis:
+					<select id = "yOpts">
+						<option value='"A173"'>Choice</option>
+						<option value='"A170"'>Happy</option>
+						<option value='"C037"'>Shame</option>
+					</select>
+					<br>
+
+					Timespan:
+					<select id = "waveOpts">
+						<option value="6">2010-2014</option>
+						<option value="5">2005-2009</option>
+						<option value="4">1999-2004</option>
+						<option value="3">1995-1998</option>
+						<option value="2">1990-1994</option>
+						<option value="1">1981-1984</option>
+					</select>
+					<br>
+
+				</div>
+			</div>
+		</div>
 		<script src="https://d3js.org/d3.v5.min.js"></script>
 		<script src="values.js"></script>
-		<div id="selectors">
-			<select id = "xOpts">
-				<option value='"A170"'>Happy</option>
-				<option value='"A173"'>Choice</option>
-				<option value='"C037"'>Shame</option>
-			</select>
-			X Axis Value
-			<br/>
-			<select id = "yOpts">
-				<option value='"A173"'>Choice</option>
-				<option value='"A170"'>Happy</option>
-				<option value='"C037"'>Shame</option>
-			</select>
-			Y Axis Value
-			<br/>
-			<select id = "waveOpts">
-				<option value="6">2014</option>
-				<option value="5">2010</option>
-				<option value="4">2006</option>
-				<option value="3">2000</option>
-				<option value="2">1990</option>
-				<option value="1">1980</option>
-			</select>
-			Year
-		</div>
 	</body>
 </html>
