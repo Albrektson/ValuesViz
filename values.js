@@ -59,6 +59,8 @@ var tooltip = d3.select("body").append("div")
 update(xData = "A170", yData = "A173", zData = "E035", wave = 6)
 
 function update(xData, yData, zData, wave) {
+  var t = d3.transition().duration(750)
+
   Promise.all([
     d3.csv("stats.csv"),
     d3.csv("reference.csv")
@@ -130,6 +132,7 @@ function update(xData, yData, zData, wave) {
 
     //update values
     bubbles
+    .transition(t)
     .attr("cx", function(d, i){
       return xScale(+d[xData]);
     })
