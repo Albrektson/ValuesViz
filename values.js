@@ -234,9 +234,6 @@ function update(xData, yData, zData, wave) {
     })
     d3.select('#zOpts').on('change', function() {
       var input = eval(d3.select(this).property('value'));
-      if (input == null) {
-        //input = "defaultBubbles";
-      }
       return update(xData, yData, input, wave)
     })
     d3.select('#waveOpts').on('change', function() {
