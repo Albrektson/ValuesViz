@@ -130,31 +130,6 @@ function update(xData, yData, zData, wave) {
       }
     })
 
-    //update values
-    bubbles
-    .transition(t)
-    .attr("cx", function(d, i){
-      return xScale(+d[xData]);
-    })
-    .attr("cy", function(d, i) {
-      return yScale(+d[yData]);
-    })
-    .attr("r", function(d){
-      if (+d["Wave"] != wave || d[xData] == "NA" || d[yData] == "NA") {
-          return 0;
-      } else {
-        return zScale(+d[zData]);
-      }
-    })
-    .on("mouseover", function(d) {
-      tooltip.transition()
-          .duration(200)
-          .style("opacity", .9);
-      tooltip.html(d.Country + "<br/>" + bubbleLabel + ":" + d[zData])
-          .style("left", (d3.event.pageX) + "px")
-          .style("top", (d3.event.pageY - 28) + "px");
-      })
-
     bubbles.enter().append("circle")
       .attr("cx", function(d, i){
         return xScale(+d[xData]);
@@ -194,11 +169,11 @@ function update(xData, yData, zData, wave) {
 
     //update and scale axes
     xAxis
-      .transition(t)
-      .call(xAxisCall)
+    .transition(t)
+    .call(xAxisCall)
     yAxis
-      .transition(t)
-      .call(yAxisCall)
+    .transition(t)
+    .call(yAxisCall)
 
     var xLabel = ref[1].Label,
         yLabel = ref[2].Label,
@@ -240,5 +215,30 @@ function update(xData, yData, zData, wave) {
       var input = eval(d3.select(this).property('value'));
       return update(xData, yData, zData, input)
     })
+
+    //update values
+    bubbles
+    .transition(t)
+    .attr("cx", function(d, i){
+      return xScale(+d[xData]);
+    })
+    .attr("cy", function(d, i) {
+      return yScale(+d[yData]);
+    })
+    .attr("r", function(d){
+      if (+d["Wave"] != wave || d[xData] == "NA" || d[yData] == "NA") {
+          return 0;
+      } else {
+        return zScale(+d[zData]);
+      }
+    })
+    .on("mouseover", function(d) {
+      tooltip.transition()
+          .duration(200)
+          .style("opacity", .9);
+      tooltip.html(d.Country + "<br/>" + bubbleLabel + ":" + d[zData])
+          .style("left", (d3.event.pageX) + "px")
+          .style("top", (d3.event.pageY - 28) + "px");
+      })
   })
 }
