@@ -1,6 +1,7 @@
 var div = document.getElementById('cnv');
 var width = div.clientWidth;
 var height = (width/4)*3;
+var bubbleSize = 10;
 
 var margin = {top: 20, right: 20, bottom: 80, left: 60},
     graphWidth = width - margin.left - margin.right,
@@ -46,20 +47,6 @@ d3.select("#canvas").append("text")
   .attr("text-anchor", "middle")
   .attr("transform", "translate(" + 20 + "," + (graphHeight/2 + margin.top) +"), rotate(-90)")
   .text("Y AXIS")
-
-//infobox text
-d3.select("#axisInfoX").append("text")
-  .attr("class", "infoText")
-  .attr("id", "axisInfoXText")
-  .text("X AXIS INFO")
-d3.select("#axisInfoY").append("text")
-  .attr("class", "infoText")
-  .attr("id", "axisInfoYText")
-  .text("Y AXIS INFO")
-d3.select("#axisInfoZ").append("text")
-  .attr("class", "infoText")
-  .attr("id", "axisInfoZText")
-  .text("Z AXIS INFO")
 
 var tooltip = d3.select("body").append("div")
   .attr("class", "tooltip")
@@ -115,7 +102,7 @@ function update(xData, yData, wave) {
       if (+d["Wave"] != wave || d[xData] == "NA" || d[yData] == "NA") {
           return 0;
       } else {
-        return 3;
+        return bubbleSize;
       }
     })
 
@@ -130,11 +117,12 @@ function update(xData, yData, wave) {
         if (+d["Wave"] != wave || d[xData] == "NA" || d[yData] == "NA") {
             return 0;
         } else {
-          return 3;
+          return bubbleSize;
         }
       })
       .attr("fill", "grey")
       .attr("stroke", "steelblue")
+      .attr("stroke-width", "2px")
       .attr("opacity", 0.75)
       .attr("id", function(d){
         return d["Country"]+d["Wave"]
@@ -148,7 +136,7 @@ function update(xData, yData, wave) {
                 .style("top", (d3.event.pageY - 28) + "px");
             })
         .on("mouseout", function(d) {
-            div.transition()
+            tooltip.transition()
                 .duration(500)
                 .style("opacity", 0);
         });
@@ -159,35 +147,22 @@ function update(xData, yData, wave) {
     xAxis.call(xAxisCall)
     yAxis.call(yAxisCall)
 
-    var label
-    var info
+    var xLabel,
+        yLabel,
+        xInfo,
+        yInfo
     ref.forEach(function(d){
       if (d["Variable"] == xData) {
-        label = d.Label
-        info = d.Categories
+        xLabel = d.Label
+        xInfo = d.Categories
+      } else if (d["Variable"] == yData) {
+        yLabel = d.Label
+        yInfo = d.Categories
       }
     })
-    d3.select("#axisInfoXText").text("Label " + "\"" + label + "\"" + " is graded as follows:" + "\n" + info);
-
-    ref.forEach(function(d){
-      if (d["Variable"] == yData) {
-        label = d.Label
-        info = d.Categories
-      }
-    })
-    d3.select("#axisInfoYText").text("Label " + "\"" + label + "\"" + " is graded as follows:" + info);
-
-    /*
-    ref.forEach(function(d){
-      if (d["Variable"] == yData) {
-        label = d.Label
-        info = d.Categories
-      }
-    })
-    */
+    d3.select("#axisInfoX").html("Label " + "\"" + label + "\"" + " is graded as follows:" + "<br/>" + info);
+    d3.select("#axisInfoY").html("Label " + "\"" + label + "\"" + " is graded as follows:" + "<br/>" + info);
     //d3.select("#axisInfoZText").text("Label " + "\"" + label + "\"" + " is graded as follows:" + info);
-    d3.select("#axisInfoZ").html("test <br/> test");
-    d3.select("#axisInfoZ").html("test2 <br/> test3");
 
     d3.select('#xOpts').on('change', function() {
       var input = eval(d3.select(this).property('value'));
