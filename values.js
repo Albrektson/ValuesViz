@@ -193,8 +193,12 @@ function update(xData, yData, zData, wave) {
     bubbles.exit().remove()
 
     //update and scale axes
-    xAxis.call(xAxisCall)
-    yAxis.call(yAxisCall)
+    xAxis
+      .transition(t)
+      .call(xAxisCall)
+    yAxis
+      .transition(t)
+      .call(yAxisCall)
 
     var xLabel = ref[1].Label,
         yLabel = ref[2].Label,
